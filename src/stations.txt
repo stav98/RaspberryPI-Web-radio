@@ -1,0 +1,26 @@
+#Λίστα σταθμών. Αν θέλουμε να απενεργοποιήσουμε ένα σταθμό, βάζουμε μπροστά το σύμβολο #.
+Rebel:::http://netradio.live24.gr/rebel1052
+Zeppelin:::http://radiostreaming.ert.gr/ert-zeppelin
+Athens Voice:::http://nitro.live24.gr/nitro4555
+Galaxy 92 Αθήνα:::http://galaxy.live24.gr/galaxy9292
+Kiss-FM Αθήνα:::http://kissfm.live24.gr/kissfmathens
+Velvet Αθήνα:::http://ice.onestreaming.com/velvetfm
+Rainbow Θεσσαλονίκη:::http://stream.radiojar.com/083wqknmsuhvv?1668103694
+Velvet Θεσσαλονίκη:::http://s10.voscast.com:9942
+Rock FM 96.9 Αθήνα:::http://az10.yesstreaming.net:8060/radio.mp3
+Rock Radio 104.7 Θεσσαλονίκη:::http://s9.yesstreaming.net:2199/proxy/anyhowmo/stream
+1055 Rock Θεσσαλονίκη:::http://radio.1055rock.gr:30000/1055
+DRS Ηράκλειο Κρήτης:::http://drs953.live24.gr/drs953
+Pepper 96.6 Αθήνα:::http://netradio.live24.gr/pepper9660?1726519184
+Δίεση 101.3 Αθήνα:::http://n17a-eu.rcs.revma.com/gkfwrhqxbfhvv?5255
+Μελωδία 99.2 Αθήνα:::http://stream.rcs.revma.com/8tdwa6ez1duvv?_=598869
+Πάλκο:::https://live.akous.gr/akouspalko
+Love Radio 97.5 Αθήνα:::http://loveradio.live24.gr/loveradio-1000
+Ελληνικός:::http://orange.live24.gr/orange9320
+More Θεσσαλονίκη:::http://eco.onestreaming.com:8041/;
+Vanilla Smooth:::http://smooth.vanillaradio.com:8032/live
+Vanilla Fresh:::http://fresh.vanillaradio.com:8028/live
+Vanilla Deep:::http://stream.vanillaradio.com:8012/live
+Δεύτερο πρόγραμμα:::http://radiostreaming.ert.gr/ert-deftero
+Δεύτερο λαϊκά:::http://radiostreaming.ert.gr/ert-talaika
+Κόσμος:::http://radiostreaming.ert.gr/ert-kosmos
