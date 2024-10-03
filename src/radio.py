@@ -207,7 +207,7 @@ if __name__ == "__main__":
 				if info == False:
 					info = True
 					print("Info pressed")
-					msg = str(len(radios_names)) + " Αποθηκευμένοι ραδιοφωνικοί σταθμοί."
+					msg = str(len(radios_names)) + ", Αποθηκευμένοι ραδιοφωνικοί σταθμοί."
 					msg += " Τώρα παίζει το ραδιόφωνο," + radios_names[Get_StationIdx()] + "."
 					msg += " Διαχειριστείτε μέσω web στην διεύθυνση, http:"
 					msg1 = tell_ip_address(local_ip)
