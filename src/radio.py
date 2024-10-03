@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #nmap -sP 192.168.42.0/24
-#import os, subprocess
 import time, socket
-#from urllib.parse import urlencode
 from threading import Thread
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import datetime
@@ -12,7 +10,6 @@ from page import *
 from playctrl import *
 
 #Καθολικές μεταβλητές
-
 mute = False; info = False
 SOCKPATH = "/var/run/lirc/lircd" #Υπέρυθρες
 sock = None
@@ -54,10 +51,20 @@ def get_local_ip():
 def start_httpserver():
 	webServer.serve_forever()
 
+#Τερματισμός λειτουργίας από button
 def shutdown(gpio):
 	stop_radio()
 	speakSpeechFromText("Γειά σας, και καλή συνέχεια", "el", "OFFLINE")
 	os.system('sudo shutdown now')
+
+#Δημιουργεί string με την IP ώστε να ακουστεί όμορφα από το TTS
+def tell_ip_address(addr):
+	tmp = addr.split(".")
+	msg1 = ""
+	for i in range(len(tmp) - 1):
+		msg1 += tmp[i] + " τελεία "
+	msg1 += tmp[i+1]
+	return msg1
 
 #Κυρίως πρόγραμμα
 if __name__ == "__main__":
@@ -116,7 +123,7 @@ if __name__ == "__main__":
 	cmd = 'amixer set PCM ' + str(vol) + '%'
 	#print(cmd) #Debug
 	subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	#speakSpeechFromText("Το ραδιόφωνο του Σταύρου.", "el", "ONLINE")
+	speakSpeechFromText("Το ραδιόφωνο του Σταύρου.", "el", "ONLINE")
 	play_radio() #Αναπαραγωγή σταθμού
 	#Φτιάχνει στιγμιότυπο του HTTPServer
 	webServer = HTTPServer((hostName, serverPort), MyServer)
@@ -129,10 +136,12 @@ if __name__ == "__main__":
 	#Για πάντα μέχρι να πατηθεί Ctrl+c
 	print("Press Ctrl C to STOP")
 
+	#Δοκίμασε κανονικά αν δεν πατήθηκε Ctrl-C από πληκτρολόγιο ή SSH
 	try:
-		while True:
-			
+		#Για πάντα
+		while True:	
 			#time.sleep(.05) #Delay
+			
 			#========= Έλεγχος των κουμπιών από το τηλεκοντρόλ υπερύθρων ==================================
 			keyname, keytimes  = next_key()
 			#Αύξηση της έντασης φωνής στον Mixer - Επιτρέπει autorepeat
@@ -158,25 +167,23 @@ if __name__ == "__main__":
 			#Έλεγχος αν πατήθηκε το προηγούμενο - Δεν επιτρέπει autorepeat
 			elif keyname == b'KEY_PREVIOUS' and int(keytimes, 16) == 0: #Αν κάνει επανάληψη κατά το πάτημα αυξάνει το keytimes
 				Prev_Station()
-			#Έλεγχος αν πατήθηκε το επόμενο - Δεν επιτρέπει autorepeat
+			#Έλεγχος αν πατήctrl:vol=93θηκε το επόμενο - Δεν επιτρέπει autorepeat
 			elif keyname == b'KEY_NEXT' and int(keytimes, 16) == 0:
 				Next_Station()
-			#Έλεγχος αν πατήθκε το μπλε Option - Δεν επιτρέπει autorepeat
+			#Έλεγχος αν πατήθκε το μπλε Option - Δεν επιτρέπει autorepeat. Θα πει την IP address με Robot voice
 			elif keyname == b'KEY_OPTION' and int(keytimes, 16) == 0:
-				print(local_ip)
+				#print(local_ip)
 				stop_radio()
-				speakSpeechFromText(str(local_ip), "el", "OFFLINE")
+				speakSpeechFromText(tell_ip_address(local_ip), "el", "OFFLINE")
 				play_radio()
 			#Έλεγχος αν πατήθηκε το Power - Δεν επιτρέπει autorepeat
 			elif keyname == b'KEY_POWER' and int(keytimes, 16) == 0:
 				print("Power Off")
-				stop_radio()
-				speakSpeechFromText("Γειά σας, και καλή συνέχεια", "el", "OFFLINE")
-				os.system('sudo shutdown now')
+				shutdown(0)
+			#Έλεγχος αν πατήθηκε το Yellow - Δεν επιτρέπει autorepeat. Θα πει την ώρα του συστήματος
 			elif keyname == b'KEY_YELLOW' and int(keytimes, 16) == 0:
 				now = datetime.datetime.now()
 				tmp1 = str(now.time()).split(':')
-				#tmp1[0] = "01"; tmp1[1] = "01"
 				if tmp1[1] == "01":
 					mins = "λεπτό"
 				else:
@@ -184,9 +191,8 @@ if __name__ == "__main__":
 				hours = ['Μηδέν', 'Μία', 'Δύο', 'Τρείς', 'Τέσσερις', 'Πέντε', 'Έξι', 'Επτά', 'Οκτώ', 'Εννέα', 'Δέκα', 'Έντεκα', 'Δώδεκα', 'Δεκατρείς',
 			             'Δεκατέσσερις', 'Δεκαπέντε', 'Δεκαέξι', 'Δεκαεπτά', 'Δεκαοκτώ', 'Δεκαεννέα', 'Είκοσι', 'Εικοσιμία', 'Εικοσιδύο', 'Εικοσιτρείς']
 				tmp2 = "Η ώρα είναι, " + hours[int(tmp1[0])] + ", και, " + tmp1[1].strip("0") + ", " + mins
-				print(tmp2)
 				speakSpeechFromText(tmp2, "el", "ONLINE")
-			#Έλεγχος αν πατήθηκε το Mute - Δεν επιτρέπει autorepeat
+			#Έλεγχος αν πατήθηκε το Mute - Δεν επιτρέπει autorepeat. Mute / Unmute
 			elif keyname == b'KEY_MUTE' and int(keytimes, 16) == 0:
 				if mute == False:
 					mute = True
@@ -203,14 +209,10 @@ if __name__ == "__main__":
 					print("Info pressed")
 					msg = str(len(radios_names)) + " Αποθηκευμένοι ραδιοφωνικοί σταθμοί."
 					msg += " Τώρα παίζει το ραδιόφωνο," + radios_names[Get_StationIdx()] + "."
-					msg += " Διαχειριστείτε μέσω web στην διεύθυνση, http: "
-					tmp = local_ip.split(".")
-					msg1 = ""
-					for i in range(len(tmp) - 1):
-						msg1 += tmp[i] + " τελεία "
-					msg1 += tmp[i+1]
+					msg += " Διαχειριστείτε μέσω web στην διεύθυνση, http:"
+					msg1 = tell_ip_address(local_ip)
 					msg += msg1 + ", άνω κάτω τελεία 80 80."
-					print(msg)
+					#print(msg)
 					stop_radio()
 					speakSpeechFromText(msg, "el", "ONLINE")
 					play_radio()
@@ -220,12 +222,11 @@ if __name__ == "__main__":
 			elif keyname in num_Buttons and int(keytimes, 16) == 0:	
 				for i in range(len(num_Buttons)):
 					if keyname == num_Buttons[i]:
-						#print(i)
 						Set_StationIdx(i-1)
 						stop_radio()
 						play_radio()
 		
-	#Αν πατήθηκε Ctrl+C
+	#Αν πατήθηκε Ctrl+C να σταματήσει την εκτέλεση του προγράμματος
 	except KeyboardInterrupt:
 		os.system("killall -9 mplayer") #Σταμάτα όποια υπόσταση του mplayer
 		webServer.server_close()
