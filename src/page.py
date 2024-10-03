@@ -71,6 +71,7 @@ p1='''<!DOCTYPE html>
   <button type="button" id="PwrBtn" onclick="powerOff()">Απενεργοποίηση</button>
   <br><br><br>
   (c)2023-24 <a href="https://sv6gmp.blogspot.com/" target="_blank">Stavros S. Fotoglou</a>
+  <a href="https://github.com/stav98/RaspberryPI-Web-radio" target="_blank">GitHub</a>
   </center>
  </body>
 </html>'''
